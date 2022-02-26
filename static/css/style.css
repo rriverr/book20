@@ -1,0 +1,103 @@
+
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#wrap {
+    position: relative;
+}
+
+#title-box {
+    width: 820px;
+    height: 200px;
+
+    /*border: solid black;*/
+    /*border-width: 1px;*/
+
+    text-align: center;
+}
+
+.site-title {
+    line-height: 200px;
+
+    font-size: 3em;
+
+    font-weight: 700;
+    color: rosybrown;
+}
+
+#page-select {
+    position: absolute;
+    right: 10px;
+}
+
+#list_box {
+    margin: 10px 0px 0px 0px;
+
+    width: 800px;
+
+    /*border: solid black;*/
+    /*border-width: 1px;*/
+}
+
+#book-box {
+    margin: auto;
+    display: flex;
+
+    width: 800px;
+    height: 250px;
+
+    border: dotted gray;
+    border-width: 0px 0px 1px 0px;
+}
+
+#image-box {
+    margin: auto;
+
+    width: 150px;
+    height: 220px;
+}
+
+#book-img {
+    width: 150px;
+    height: 220px;
+}
+
+#info-box {
+    margin: auto;
+    padding: 10px 0px 0px 10px;
+
+    width: 500px;
+    height: 220px;
+}
+
+#btn-box {
+    margin: auto;
+
+    width: 100px;
+    height: 220px;
+
+
+    position: relative;
+}
+
+#buy-btn {
+    width: 70px;
+    height: 30px;
+
+    border: none;
+    border-radius: 20px;
+
+    background-color: antiquewhite;
+
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
