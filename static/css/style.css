@@ -39,10 +39,15 @@ a:hover {
 .site-title {
     line-height: 200px;
 
-    font-size: 3em;
+    font-size: 5em;
 
-    font-weight: 700;
-    color: rosybrown;
+    font-weight: 800;
+    color: #C3AD93;
+}
+
+.site-title>span {
+    color: #5A5A5A;
+    font-size: 1em;
 }
 
 #page-select {
@@ -88,6 +93,8 @@ a:hover {
 
     width: 500px;
     height: 220px;
+
+    position: relative;
 }
 
 .author {
@@ -101,6 +108,10 @@ a:hover {
     font-weight: 300;
 }
 
+.rank {
+    position: absolute;
+    bottom: 0px;
+}
 
 
 #btn-box {
