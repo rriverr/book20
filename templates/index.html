@@ -38,22 +38,26 @@
                         let pubday = rows[i]['pubday']
                         let rank = rows[i]['rank']
                         let price = rows[i]['price']
+                        let link = rows[i]['link']
 
 
                         let temp_html = `<div id="book-box">
                                             <div id="image-box">
-                                                <a href="http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791161571188">
+                                                <a href="#">
                                                     <img id="book-img" src="${image}" alt="">
                                                 </a>
                                             </div>
                                             <div id="info-box">
-                                                <h2>${title}</h2>
-                                                <p>${author}</p>
-                                                <p><img src="${rank}"></p>
-                                                <p>${price}</p>
+                                                <a href="#"><h2>${title}</h2></a>
+                                                <p class="author">${author}</p>
+                                                <p class="pub">${publisher} | ${pubday}</p>
+                                                <p class="rank"><img src="${rank}"></p>
                                             </div>
                                             <div id="btn-box">
-                                                <button id="buy-btn">구매하기</button>
+                                               <div class="price-box">
+                                                    <p class="price">${price}</p>
+                                                </div>
+                                                <button id="buy-btn" onclick="window.open('${link}');">구매하기</button>
                                             </div>
                                         </div>`
 

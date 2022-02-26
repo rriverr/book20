@@ -10,6 +10,18 @@ body {
     min-height: 100vh;
 }
 
+a:link {
+    color: black; text-decoration: none;
+}
+a:visited {
+    color: black; text-decoration: none;
+}
+a:hover {
+    color: gray; text-decoration: none;
+}
+
+
+
 #wrap {
     position: relative;
 }
@@ -78,15 +90,38 @@ body {
     height: 220px;
 }
 
+.author {
+    margin: 5px 0px 5px 0px;
+
+    font-size: 1.2em;
+}
+
+.pub {
+    font-size: 1em;
+    font-weight: 300;
+}
+
+
+
 #btn-box {
     margin: auto;
 
     width: 100px;
     height: 220px;
 
-
     position: relative;
 }
+
+.price-box {
+    width: 100px;
+    height: 60px;
+    text-align: right;
+
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+}
+
 
 #buy-btn {
     width: 70px;
