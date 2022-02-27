@@ -28,8 +28,8 @@
 
         function show_review(){
             $.ajax({
-                type: "GET",
-                url: "/review",
+                type: 'GET',
+                url: '/review',
                 data: {},
                 success: function (response) {
                     let rows = response['reviewcmt']
