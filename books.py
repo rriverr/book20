@@ -30,13 +30,13 @@ for book in books :
     isbn = link[-13:]
 
 
+
+
     getsubPage = requests.get(link)
     subPage = BeautifulSoup(getsubPage.text, 'html.parser')
 
-
     getReviews = subPage.find("div", {"class":"box_detail_article"})
     # getReviews = subPage.select_one('#container > div:nth-child(7) > div.content_left > div:nth-child(5) > div:nth-child(25) > div:nth-child(2)')
-
 
     reviews = getReviews.text
     print(reviews)
