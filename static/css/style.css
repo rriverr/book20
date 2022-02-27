@@ -24,6 +24,7 @@ a:hover {
 
 #wrap {
     position: relative;
+    padding-bottom: 100px;
 }
 
 #title-box {
