@@ -31,7 +31,6 @@ for book in books :
 
 
 
-
     getsubPage = requests.get(link)
     subPage = BeautifulSoup(getsubPage.text, 'html.parser')
 

@@ -10,6 +10,7 @@ client = MongoClient('mongodb+srv://test:yunayuna@cluster0.5i0os.mongodb.net/Clu
 db = client.dbsparta
 
 
+
 @app.route('/')
 def home():
     return render_template('index.html')
