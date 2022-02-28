@@ -21,7 +21,7 @@ def book_get():
 def review():
     return render_template('review.html')
 
-@app.route("/review", methods=["POST"])
+@app.route("/reviews", methods=["POST"])
 def review_post():
     nickname_receive = request.form['nickname_give']
     content_receive = request.form['content_give']
@@ -34,7 +34,7 @@ def review_post():
     return jsonify({'msg':'등록되었습니다.'})
 
 
-@app.route("/review", methods=["GET"])
+@app.route("/reviews", methods=["GET"])
 def review_get():
     review_list = list(db.reviewcmt.find({}, {'_id': False}))
     return jsonify({'reviews':review_list})
