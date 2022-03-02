@@ -1,62 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      href="{{ url_for('static', filename='css/style.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+  <meta property="og:title" content="일월소설" />
+  <meta property="og:description" content="1월의 베스트셀러 소설 20권을 만나보세요!" />
+  <meta property="og:image" content="static/logo.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-    <title>BOOK20</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"/>
 
-    <script>
-      $(document).ready(function () {
-        show_book();
-      });
+  <title>일월소설</title>
 
-      function show_book() {
-        $.ajax({
-          type: "GET",
-          url: "/book",
-          data: {},
-          success: function (response) {
-            let rows = response["books"];
-            for (let i = 0; i < rows.length; i++) {
-              let image = rows[i]["image"];
-              let title = rows[i]["title"];
-              let author = rows[i]["author"];
-              let publisher = rows[i]["publisher"];
-              let pubday = rows[i]["pubday"];
-              let rank = rows[i]["rank"];
-              let price = rows[i]["price"];
-              let link = rows[i]["link"];
-              let isbn = rows[i]["isbn"]["value"];
-              // title링크를 누르면 isbn 번호도 같이 전달될 수 있게 url 매개변수에 값을 할당
-              let temp_html = `<div id="book-box">
+  <script>
+
+
+    $(document).ready(function () {
+      show_book();
+    });
+
+    function show_book() {
+      $.ajax({
+        type: "GET",
+        url: "/book",
+        data: {},
+        success: function (response) {
+          let rows = response["books"];
+          for (let i = 0; i < rows.length; i++) {
+            let image = rows[i]["image"];
+            let title = rows[i]["title"];
+            let author = rows[i]["author"];
+            let publisher = rows[i]["publisher"];
+            let pubday = rows[i]["pubday"];
+            let rank = rows[i]["rank"];
+            let price = rows[i]["price"];
+            let link = rows[i]["link"];
+            let isbn = rows[i]["isbn"];
+            // title링크를 누르면 isbn 번호도 같이 전달될 수 있게 url 매개변수에 값을 할당
+            let temp_html = `<div id="book-box">
                                             <div id="image-box">
-                                                <a href="#">
+                                                <a href="/review?isbn=${isbn}">
                                                     <img id="book-img" src="${image}" alt="">
                                                 </a>
                                             </div>
@@ -73,32 +64,38 @@
                                                 <button id="buy-btn" onclick="window.open('${link}');">구매하기</button>
                                             </div>
                                         </div>`;
-
-              $("#list_box").append(temp_html);
-            }
-          },
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <div id="wrap">
-      <div id="title-box">
-        <h1 class="site-title">일월<span>소설</span></h1>
-      </div>
-      <!--페이징선택-->
-      <select id="page-select">
-        <option value="10">5개씩 보기</option>
-        <option value="10">10개씩 보기</option>
-        <option value="20">20개씩 보기</option>
-      </select>
-      <!--책 목록-->
-      <div id="list_box"></div>
-      <!--페이지-->
-      <!--        <div id="paging-box">-->
-      <!--            <ul id="paging-ul">-->
-      <!--            </ul>-->
-      <!--        </div>-->
-    </div>
-  </body>
+            $("#list_box").append(temp_html);
+          }
+        },
+      });
+    }
+  </script>
+</head>
+<body>
+<div id="wrap">
+  <div id="title-box">
+    <a href="/">
+      <img src="static/logo.png">
+    </a>
+  </div>
+  <!--페이징선택-->
+  <select id="page-select">
+    <option value="5">5개씩 보기</option>
+    <option value="10">10개씩 보기</option>
+    <option value="20" selected>20개씩 보기</option>
+  </select>
+  <div id="list_box">
+    <!--  책 목록  -->
+  </div>
+</div>
+<div class="page-area">
+  <ul id="pagingul">
+  </ul>
+</div>
+<footer id="footer">
+  <div class="line-area"><div class="line"></div></div>
+  <p>🔥 hh99 team 2 🔥</p>
+  <p>이진혁 | 임차혁 | 천누리 | 서유나</p>
+</footer>
+</body>
 </html>
