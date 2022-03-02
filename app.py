@@ -41,7 +41,7 @@ def review_post():
 @app.route("/reviews", methods=["GET"])
 def review_get():
     book_list = list(db.books.find({}, {'_id': False}))
-    review_list = list(db.review.find({}, {'_id': False}))
+    review_list = list(db.reviews.find({}, {'_id': False}))
     return jsonify({'books':book_list, 'reviews': review_list})
 
 if __name__ == '__main__':

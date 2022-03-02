@@ -60,7 +60,7 @@
           success: function (response) {
             let rows = response["books"];
             for (let i = 0; i < rows.length; i++) {
-              if (rows[i]["isbn"]["value"] === isbn) {
+              if (rows[i]["isbn"] === isbn) {
                 let image = rows[i]["image"];
                 let title = rows[i]["title"];
                 let author = rows[i]["author"];
@@ -141,46 +141,7 @@
       <div id="title-box">
         <h1 class="site-title">일월<span>소설</span></h1>
       </div>
-      <div id="rv-book-box">
-        <!-- <div id="rv-image-box">
-          <img
-            class="rv-book-image"
-            src="http://image.kyobobook.co.kr/images/book/large/188/l9791161571188.jpg"
-            alt=""
-          />
-        </div>
-        <div id="rv-info-box">
-          <h1 class="rv-book-title">불편한 편의점(15만부 기념 윈터 에디션)</h1>
-          <p class="rv-book-author">
-            김호연 지음 | 나무옆의자 | 2021년 04월 20일 출간
-          </p>
-          <img
-            class="rv-book-rank"
-            src="https://simage.kyobobook.co.kr/ink/images/common/img_starating_a5.gif"
-            alt=""
-          />
-          <div id="rv-pub-review">
-            <h4>출판사 서평</h4>
-            <p>
-              사람들이 기피하고 편견 어린 시선으로 바라보던 인물의 변신과 반전,
-              아이러니한 상황 전개는 이 소설의 가장 흥미로운 지점이다. 염 여사의
-              편의점은 직원들 입장에서는 비교적 좋은 대우를 받으며 안정적으로
-              일할 수 있는 곳이지만 주변에 편의점이 하나둘 생기면서 경쟁에서
-              밀리자 장사가 잘 되지 않는 상황에 봉착한다. 그러다 보니 동네
-              사람들에게 ‘불편한 편의점’으로 인식되는데, 이런 와중에 얼마 전까지
-              노숙자였던 ‘미련 곰탱이’ 같은 사내에게 야간 시간대를 맡긴다니 기존
-              직원들로서는 불안할 수밖에. 그런데 걱정도 잠시, 그가 들어온 후
-              편의점에는 신선한 변화의 바람이 일기 시작한다. 그는 물건을 슬쩍한
-              뒤 튀려는...<button
-                id="more-btn"
-                onclick="window.open('${link}');"
-              >
-                자세히
-              </button>
-            </p>
-          </div>
-        </div> -->
-      </div>
+      <div id="rv-book-box"></div>
       <div id="rv-input-box">
         <input id="nickname" type="text" placeholder="닉네임" />
         <button id="upload-btn" onclick="save_review()">등록하기</button>
