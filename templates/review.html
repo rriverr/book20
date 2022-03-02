@@ -79,7 +79,6 @@
                                       <h4>출판사 서평</h4>
                                       <p>사람들이 기피하고 편견 어린 시선으로 바라보던 인물의 변신과 반전, 아이러니한 상황 전개는 이 소설의 가장 흥미로운 지점이다. 염 여사의 편의점은 직원들 입장에서는 비교적 좋은 대우를 받으며 안정적으로 일할 수 있는 곳이지만 주변에 편의점이 하나둘 생기면서 경쟁에서 밀리자 장사가 잘 되지 않는 상황에 봉착한다. 그러다 보니 동네 사람들에게 ‘불편한 편의점’으로 인식되는데, 이런 와중에 얼마 전까지 노숙자였던 ‘미련 곰탱이’ 같은 사내에게 야간 시간대를 맡긴다니 기존 직원들로서는 불안할 수밖에. 그런데 걱정도 잠시, 그가 들어온 후 편의점에는 신선한 변화의 바람이 일기 시작한다. 그는 물건을 슬쩍한 뒤 튀려는...<button id="more-btn" onclick="window.open('${link}');">자세히</button></p>
                                       </div>
-
                               </div>`;
 
                 $("#rv-book-box").append(temp_html);
@@ -97,11 +96,11 @@
           url: "/reviews",
           data: {},
           success: function (response) {
-            let rows = response["books"];
+            let rows = response["reviews"];
             for (let i = 0; i < rows.length; i++) {
-              if (rows[i]["isbn"]["value"] === isbn) {
-                let nickname = rows[i]["isbn"]["msg"]["rvnickname"];
-                let content = rows[i]["isbn"]["msg"]["rvcontent"];
+              if (rows[i]["isbn"] === isbn) {
+                let nickname = rows[i]["nickname"];
+                let content = rows[i]["content"];
                 let temp_html = `<div id="review-comment">
                                              <div id="rc-nickname">
                                                  <p class="cmt-nick">${nickname}</p>
