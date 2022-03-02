@@ -1,59 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
 
-    <title> BOOK20 </title>
+    <title>BOOK20</title>
 
     <script>
+      $(document).ready(function () {
+        show_book();
+      });
 
-
-        $(document).ready(function () {
-            show_book();
-        });
-
-
-        function show_book(){
-            $.ajax({
-                type: "GET",
-                url: "/book",
-                data: {},
-                success: function (response) {
-                    let rows = response['books']
-                    for (let i=0; i<rows.length; i++) {
-                        let image = rows[i]['image']
-                        let title = rows[i]['title']
-                        let author = rows[i]['author']
-                        let publisher = rows[i]['publisher']
-                        let pubday = rows[i]['pubday']
-                        let rank = rows[i]['rank']
-                        let price = rows[i]['price']
-                        let link = rows[i]['link']
-
-
-                        let temp_html = `<div id="book-box">
+      function show_book() {
+        $.ajax({
+          type: "GET",
+          url: "/book",
+          data: {},
+          success: function (response) {
+            let rows = response["books"];
+            for (let i = 0; i < rows.length; i++) {
+              let image = rows[i]["image"];
+              let title = rows[i]["title"];
+              let author = rows[i]["author"];
+              let publisher = rows[i]["publisher"];
+              let pubday = rows[i]["pubday"];
+              let rank = rows[i]["rank"];
+              let price = rows[i]["price"];
+              let link = rows[i]["link"];
+              let isbn = rows[i]["isbn"]["value"];
+              // title링크를 누르면 isbn 번호도 같이 전달될 수 있게 url 매개변수에 값을 할당
+              let temp_html = `<div id="book-box">
                                             <div id="image-box">
                                                 <a href="#">
                                                     <img id="book-img" src="${image}" alt="">
                                                 </a>
                                             </div>
                                             <div id="info-box">
-                                                <a href="/review"><h2>${title}</h2></a>
+                                                <a href="/review?isbn=${isbn}"><h2>${title}</h2></a>
                                                 <p class="author">${author}</p>
                                                 <p class="pub">${publisher} | ${pubday}</p>
                                                 <p class="rank"><img src="${rank}"></p>
@@ -64,39 +72,33 @@
                                                 </div>
                                                 <button id="buy-btn" onclick="window.open('${link}');">구매하기</button>
                                             </div>
-                                        </div>`
+                                        </div>`;
 
-                        $('#list_box').append(temp_html)
-                    }
-                }
-            });
-        }
-
-
+              $("#list_box").append(temp_html);
+            }
+          },
+        });
+      }
     </script>
-</head>
-<body>
-
-<div id="wrap">
-    <div id="title-box">
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="title-box">
         <h1 class="site-title">일월<span>소설</span></h1>
-    </div>
-    <!--페이징선택-->
-    <select id="page-select">
+      </div>
+      <!--페이징선택-->
+      <select id="page-select">
         <option value="10">5개씩 보기</option>
         <option value="10">10개씩 보기</option>
         <option value="20">20개씩 보기</option>
-    </select>
-    <!--책 목록-->
-    <div id="list_box">
-
+      </select>
+      <!--책 목록-->
+      <div id="list_box"></div>
+      <!--페이지-->
+      <!--        <div id="paging-box">-->
+      <!--            <ul id="paging-ul">-->
+      <!--            </ul>-->
+      <!--        </div>-->
     </div>
-    <!--페이지-->
-<!--        <div id="paging-box">-->
-<!--            <ul id="paging-ul">-->
-<!--            </ul>-->
-<!--        </div>-->
-</div>
-
-</body>
+  </body>
 </html>
