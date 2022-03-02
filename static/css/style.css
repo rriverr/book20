@@ -2,36 +2,41 @@
 * {
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 14px;
+
+    box-sizing: border-box;
 }
 
 body {
     display: flex;
     justify-content: center;
     min-height: 100vh;
+
+    position: relative;
 }
 
 a:link {
-    color: black; text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 a:visited {
-    color: black; text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 a:hover {
-    color: gray; text-decoration: none;
+    color: gray;
+    text-decoration: none;
 }
-
-
 
 #wrap {
     position: relative;
+    padding-bottom: 100px;
+    height: auto;
+
 }
 
 #title-box {
     width: 820px;
     height: 200px;
-
-    /*border: solid black;*/
-    /*border-width: 1px;*/
 
     text-align: center;
 }
@@ -40,7 +45,6 @@ a:hover {
     line-height: 200px;
 
     font-size: 5em;
-
     font-weight: 800;
     color: #C3AD93;
 }
@@ -59,9 +63,6 @@ a:hover {
     margin: 10px 0px 0px 0px;
 
     width: 800px;
-
-    /*border: solid black;*/
-    /*border-width: 1px;*/
 }
 
 #book-box {
@@ -147,3 +148,173 @@ a:hover {
     bottom: 0px;
     right: 0px;
 }
+
+
+/*----------review----------*/
+
+
+#rv-book-box {
+    padding-bottom: 25px;
+
+    width: 800px;
+
+    /*border: solid black;*/
+    /*border-width: 1px;*/
+
+    display: flex;
+
+}
+
+#rv-image-box {
+    margin: 30px 0px 0px 0px;
+
+    /*border: solid black;*/
+    /*border-width: 1px;*/
+}
+
+
+#rv-info-box {
+    margin:25px 0px 0px 50px;
+    padding: 0px 0px 5px 0px;
+
+    width: 550px;
+
+    position: relative;
+
+    /*border: solid black;*/
+    /*border-width: 1px;*/
+
+    text-align: justify;
+}
+
+#more-btn {
+    width: 50px;
+    height: 20px;
+
+    line-height: 10px;
+
+    font-size: 0.8em;
+    color: white;
+
+    border: none;
+    border-radius: 20px;
+    background-color: #C3AD93;
+}
+
+.rv-book-title {
+    font-size: 2.3em;
+}
+
+.rv-book-author {
+    font-size: 1em;
+    color: #5A5A5A;
+}
+
+#rv-pub-review {
+    margin-top: 20px;
+
+    position: absolute;
+}
+
+#rv-pub-review > h4 {
+    font-size: 1.5em;
+}
+
+#rv-pub-review > p {
+    font-size: 1em;
+}
+
+#rv-input-box {
+    margin-top: 30px;
+
+    width: 800px;
+    height: 200px;
+
+    /*border: solid black;*/
+    /*border-width: 1px;*/
+
+    position: relative;
+}
+
+#nickname {
+    padding: 10px;
+
+    width: 200px;
+    height: 40px;
+
+    border: none;
+}
+
+#nickname:focus {
+    outline: none;
+}
+
+#upload-btn {
+    margin: 1px;
+
+    width: 100px;
+    height: 40px;
+
+    border: none;
+    background-color: #C3AD93;
+    color: white;
+
+    position: absolute;
+    right: 0px;
+}
+
+#rv-text-box {
+    margin-top: 5px;
+    padding: 10px;
+
+    width: 800px;
+    height: 150px;
+
+    background-color: transparent;
+
+    border: none;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+
+    resize: none;
+}
+
+#rv-text-box:focus {
+    outline: none;
+}
+
+#rv-review-box {
+    margin-top: 30px;
+
+    width: 800px;
+
+}
+
+#review-comment {
+    padding: 20px 0px 0px 0px;
+
+    width: 800px;
+    height: auto;
+
+    display: grid;
+    grid-template-columns: 150px 650px;
+
+    border-bottom: 1px dotted #5A5A5A;
+
+    overflow: initial;
+}
+
+
+#rc-nickname {
+    padding: 0px 5px 0px 5px;
+    height: auto;
+    font-weight: 600;
+}
+
+#rc-content {
+    height: auto;
+    text-align: justify;
+
+}
+
+
