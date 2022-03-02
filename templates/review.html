@@ -32,9 +32,65 @@
     <title>BOOK20</title>
 
     <script>
+      //url 파라미터로 넘겨준 식별자 isbn가져오는 함수
+      function get_query() {
+        var url = document.location.href;
+        var qs = url.substring(url.indexOf("?") + 1).split("&");
+        for (var i = 0, result = {}; i < qs.length; i++) {
+          qs[i] = qs[i].split("=");
+          result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+        }
+        return result;
+      }
+
+      // 고유식별자 isbn을 전역변수로 저장
+      let isbn = get_query()["isbn"];
+      console.log(isbn);
+      console.log(typeof isbn);
+
       $(document).ready(function () {
+        show_book();
         show_review();
       });
+
+      function show_book() {
+        $.ajax({
+          type: "GET",
+          url: "/book",
+          data: {},
+          success: function (response) {
+            let rows = response["books"];
+            for (let i = 0; i < rows.length; i++) {
+              if (rows[i]["isbn"]["value"] === isbn) {
+                let image = rows[i]["image"];
+                let title = rows[i]["title"];
+                let author = rows[i]["author"];
+                let publisher = rows[i]["publisher"];
+                let pubday = rows[i]["pubday"];
+                let link = rows[i]["link"];
+
+                let temp_html = `<div id="rv-image-box">
+                                  <img class="rv-book-image" src=${image} alt="">
+                              </div>
+                              <div id="rv-info-box">
+                                  <h1 class="rv-book-title">${title}</h1>
+                                  <p class="rv-book-author">${author} 지음 | ${publisher} | ${pubday} 출간</p>
+                                  <img class="rv-book-rank" src=${link} alt="">
+                                  <div id="rv-pub-review">
+                                      <h4>출판사 서평</h4>
+                                      <p>사람들이 기피하고 편견 어린 시선으로 바라보던 인물의 변신과 반전, 아이러니한 상황 전개는 이 소설의 가장 흥미로운 지점이다. 염 여사의 편의점은 직원들 입장에서는 비교적 좋은 대우를 받으며 안정적으로 일할 수 있는 곳이지만 주변에 편의점이 하나둘 생기면서 경쟁에서 밀리자 장사가 잘 되지 않는 상황에 봉착한다. 그러다 보니 동네 사람들에게 ‘불편한 편의점’으로 인식되는데, 이런 와중에 얼마 전까지 노숙자였던 ‘미련 곰탱이’ 같은 사내에게 야간 시간대를 맡긴다니 기존 직원들로서는 불안할 수밖에. 그런데 걱정도 잠시, 그가 들어온 후 편의점에는 신선한 변화의 바람이 일기 시작한다. 그는 물건을 슬쩍한 뒤 튀려는...<button id="more-btn" onclick="window.open('${link}');">자세히</button></p>
+                                      </div>
+
+                              </div>`;
+
+                $("#rv-book-box").append(temp_html);
+              }
+
+              // title링크를 누르면 isbn 번호도 같이 전달될 수 있게 url 매개변수에 값을 할당
+            }
+          },
+        });
+      }
 
       function show_review() {
         $.ajax({
@@ -42,22 +98,21 @@
           url: "/reviews",
           data: {},
           success: function (response) {
-            let rows = response["reviews"];
-            console.log(response);
+            let rows = response["books"];
             for (let i = 0; i < rows.length; i++) {
-              let rvnickname = rows[i]["rvnickname"];
-              let rvcontent = rows[i]["rvcontent"];
-
-              let temp_html = `<div id="review-comment">
-                                            <div id="rc-nickname">
-                                                <p class="cmt-nick">${rvnickname}</p>
-                                            </div>
-                                            <div id="rc-content">
-                                                <p class="cmt-cont">${rvcontent}</p>
-                                            </div>
-                                        </div>`;
-
-              $("#rv-review-box").append(temp_html);
+              if (rows[i]["isbn"]["value"] === isbn) {
+                let nickname = rows[i]["isbn"]["msg"]["rvnickname"];
+                let content = rows[i]["isbn"]["msg"]["rvcontent"];
+                let temp_html = `<div id="review-comment">
+                                             <div id="rc-nickname">
+                                                 <p class="cmt-nick">${nickname}</p>
+                                             </div>
+                                             <div id="rc-content">
+                                                 <p class="cmt-cont">${content}</p>
+                                             </div>
+                                         </div>`;
+                $("#rv-review-box").append(temp_html);
+              }
             }
           },
         });
@@ -70,7 +125,11 @@
         $.ajax({
           type: "POST",
           url: "/reviews",
-          data: { nickname_give: nickname, content_give: content },
+          data: {
+            nickname_give: nickname,
+            content_give: content,
+            isbn_give: isbn,
+          },
           success: function (response) {
             alert(response["msg"]);
             window.location.reload();
@@ -85,7 +144,7 @@
         <h1 class="site-title">일월<span>소설</span></h1>
       </div>
       <div id="rv-book-box">
-        <div id="rv-image-box">
+        <!-- <div id="rv-image-box">
           <img
             class="rv-book-image"
             src="http://image.kyobobook.co.kr/images/book/large/188/l9791161571188.jpg"
@@ -103,25 +162,8 @@
             alt=""
           />
           <div id="rv-pub-review">
-            <h4>
-              출판사 서평<button
-                id="more-btn"
-                onclick="window.open('http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791161571188')"
-              >
-                자세히
-              </button>
-            </h4>
+            <h4>출판사 서평</h4>
             <p>
-              불편한데 자꾸 가고 싶은 편의점이 있다!<br />
-              <br />
-              힘들게 살아낸 오늘을 위로하는 편의점의 밤<br />
-              정체불명의 알바로부터 시작된 웃음과 감동의 나비효과<br />
-              『망원동 브라더스』 김호연의 ‘동네 이야기’ 시즌 2<br />
-              <br />
-              청파동 골목에 자리 잡은 작은 편의점 ALWAYS.<br />
-              어느 날 서울역에서 살던 사내가 야간 알바로 들어오면서<br />
-              편의점에 변화의 바람이 일기 시작한다!<br />
-              <br />
               사람들이 기피하고 편견 어린 시선으로 바라보던 인물의 변신과 반전,
               아이러니한 상황 전개는 이 소설의 가장 흥미로운 지점이다. 염 여사의
               편의점은 직원들 입장에서는 비교적 좋은 대우를 받으며 안정적으로
@@ -131,81 +173,22 @@
               노숙자였던 ‘미련 곰탱이’ 같은 사내에게 야간 시간대를 맡긴다니 기존
               직원들로서는 불안할 수밖에. 그런데 걱정도 잠시, 그가 들어온 후
               편의점에는 신선한 변화의 바람이 일기 시작한다. 그는 물건을 슬쩍한
-              뒤 튀려는 불량학생이나 한밤중의 취객을 제법 잘 다루고, 일명
-              제이에스라 불리는 진상 손님까지 두 손 들고 나가 떨어지게 만든다.
-              뿐만 아니라 편의점은 비싸다며 오지 않던 동네 노인들마저 독고의
-              싹싹한 태도에 마실 나오듯 편의점을 어슬렁거리기 시작하고, 그로
-              인해 오전 매출이 쑥 올라간다.<br />
-              독고가 일으킨 변화의 바람은 동료들에게도 전해진다. 편의점 알바를
-              하며 공무원시험을 준비하는 시현은 신참 독고에게 매장 업무 교육을
-              해주다 그가 불쑥 건넨 말 한마디에 자신의 숨은 재능을 발견한다.
-              얼마 후 그녀는 다른 편의점에 스카우트된다. 아들과의 관계 단절로
-              속을 태우는 오 여사는 자신의 하소연을 귀담아 들어주고 아들과
-              소통할 방법을 넌지시 알려주는 독고에게 큰 감명을 받는다. 그런가
-              하면 어떤 손님은 독고의 눈빛과 접객 태도에서 영락없는 사장의
-              풍모를 추리해내기도 한다. 집과 회사 양쪽에서 점점 존재감을
-              잃어가는 세일즈맨 경만은 퇴근길 편의점에서 하는 혼술이 유일한
-              낙인데, 어느 날부터 편의점을 밤을 장악한 사내를 사장이라
-              지레짐작하여 못마땅한 시선을 보낸다. 하지만 그 역시 독고의 순수한
-              호의 앞에서 얼어붙은 마음이 스르르 풀어지고 만다.<br />
-              독고 효과는 여기서 그치지 않는다. 염 여사로 하여금 독고를 쫓아내고
-              편의점을 팔게 하려던 민식은 그녀를 설득하는 과정에서 엄마와 더욱
-              돈독한 사이가 되고, 민식의 사주로 독고의 뒷조사를 하던 곽 씨는
-              오히려 타깃인 독고에게 감정이입을 하고 만다. 지친 상태로 대학로를
-              떠나와 마지막 글쓰기에 매달리는 희곡작가 인경은 서울역 홈리스였던
-              이상한 알바와 매일 밤 취재차 대화를 나누면서 글을 쓸 수 있다는
-              용기를 되찾는다. 어쩌면 이곳 편의점에서는 손님이든 직원이든 서로가
-              서로에게 구원과 영감을 주는 존재들인지 모른다. 애초에 염 여사가
-              도움의 손길을 내밀었을 때 독고가 이를 받아들인 것도 살기 위한
-              마지막 본능에 가까웠고, 염 여사 역시 덕분에 편의점의 밤을 맡길
-              든든한 인재를 얻었으니 그들은 서로를 지켜낸 셈이다.<br />
-              <br />
-              삶은 관계이자 소통,<br />
-              행복은 멀리 있지 않고 내 옆의 사람들과 마음을 나누는 데 있다<br />
-              <br />
-              소설은 일곱 개의 에피소드를 통해 편의점을 둘러싼 다양한 인물의
-              시선으로 독고의 모습을 비춘다. 그리고 마지막은 독고의 독백으로
-              마무리된다. 편의점 일에 숙달될수록 독고는 기억을 조금씩 되찾는다.
-              사람들을 만나고 대화를 나누다 보니 알코올로 굳어진 뇌가
-              활성화되면서 기억의 조각들이 맞춰지기 시작한 것이다. 그는 어쩌다가
-              모든 것을 잃고 술에 빠져 살다가 기억마저 잃어버리고 노숙인이
-              되었을까. 분명한 것은 그가 편의점에서 두 계절을 보내면서 다시
-              살아내기로 마음먹은 것이다. 그가 기억을 거의 회복할 무렵 대구
-              지역에서 코로나가 걷잡을 수 없이 확산되고 있다는 소식이 들린다.
-              그와 함께 독고에게도 결단의 시간이 찾아온다.<br />
-              <br />
-              편의점이란 사람들이 수시로 오가는 곳이고 손님이나 점원이나 예외
-              없이 머물다 가는 공간이란 걸, 물건이든 돈이든 충전을 하고 떠나는
-              인간들의 주유소라는 걸, 그녀는 잘 알고 있었다. 이 주유소에서 나는
-              기름만 넣은 것이 아니라 아예 차를 고쳤다. 고쳤으면 떠나야지. 다시
-              길을 가야지. 그녀가 그렇게 내게 말하는 듯했다. (243쪽)
+              뒤 튀려는...<button
+                id="more-btn"
+                onclick="window.open('${link}');"
+              >
+                자세히
+              </button>
             </p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div id="rv-input-box">
         <input id="nickname" type="text" placeholder="닉네임" />
         <button id="upload-btn" onclick="save_review()">등록하기</button>
         <textarea id="rv-text-box" placeholder="리뷰를 입력하세요."></textarea>
       </div>
-      <div id="rv-review-box">
-        <div id="review-comment">
-          <div id="rc-nickname">
-            <p class="cmt-nick">리버</p>
-          </div>
-          <div id="rc-content">
-            <p class="cmt-cont">재미있어요!</p>
-          </div>
-        </div>
-        <div id="review-comment">
-          <div id="rc-nickname">
-            <p class="cmt-nick">리버링링</p>
-          </div>
-          <div id="rc-content">
-            <p class="cmt-cont">외않되🤮</p>
-          </div>
-        </div>
-      </div>
+      <div id="rv-review-box"></div>
     </div>
   </body>
 </html>
